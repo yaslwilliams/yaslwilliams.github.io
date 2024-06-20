@@ -1,20 +1,123 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>platformer</title>
-    <link href="platformer.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-    <script src="setup.js"></script>
-    <script src="helpers.js"></script>
-    <script src="platformer.js"></script>
+    <meta charset="utf-8" />
+    <title>Bouncing Box</title>
+    <script src="jquery.min.js"></script>
+    <style>
+      .box {
+        width: 150px;
+        height: 150px;
+        background-color: rgb(82, 42, 78);
+        font-size: 300%;
+        text-align: center;
+        user-select: none;
+        display: block;
+        position: absolute;
+        top: 100px;
+        left: 0px; /* <--- Change me! */
+        background-image: url("https://t3.ftcdn.net/jpg/06/25/95/40/360_F_625954075_LA8kZtScb8QrJtG0JTBv3FZ9wTgXURKY.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .board {
+        height: 100vh;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url("https://pikwizard.com/pw/small/d12ba24e2c3eb10bdbad938c61b597b2.jpg");
+      }
+    </style>
+    <!--  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
   </head>
+  <body class="board">
+    <!-- HTML for the box -->
+    <div class="box">?</div>
 
-  <body id="body">
-    <canvas id="canvas" width="1400" height="750"></canvas>
-    <img id="cannon" src="images/cannon.png" />
-    <img id="player" src="images/halle.png" />
-    <img id="projectile" src="images/projectile.png" />
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Test.svg" />
+    <script>
+      (function () {
+        "use strict";
+        /* global jQuery */
+
+        //////////////////////////////////////////////////////////////////
+        /////////////////// SETUP DO NOT DELETE //////////////////////////
+        //////////////////////////////////////////////////////////////////
+
+        var box = jQuery(".box"); // reference to the HTML .box element
+        var board = jQuery(".board"); // reference to the HTML .board element
+        var boardWidth = board.width(); // the maximum X-Coordinate of the screen
+
+        // Every 50 milliseconds, call the update Function (see below)
+        setInterval(update, 50);
+
+        // Every time the box is clicked, call the handleBoxClick Function (see below)
+        box.on("click", handleBoxClick);
+
+        // moves the Box to a new position on the screen along the X-Axis
+        function moveBoxTo(newPositionX, newPositionY) {
+          box.css("left", newPositionX);
+          box.css("top", newPositionY);
+        }
+
+        // changes the text displayed on the Box
+        function changeBoxText(newText) {
+          box.text(newText);
+        }
+
+        //////////////////////////////////////////////////////////////////
+        /////////////////// YOUR CODE BELOW HERE /////////////////////////
+        //////////////////////////////////////////////////////////////////
+
+        // TODO 2 - Variable declarations
+        var PositionX = 0;
+        var points = 1;
+        var speedX = 10;
+    var speedY = 10;
+        var PositionY = 0;
+    var boardHeight = jQuery(window).height(); 
+
+
+        /*
+                 This Function will be called 20 times/second. Each time it is called,
+                 it should move the Box to a new location. If the box drifts off the screen
+                 turn it around!
+                 */
+        function update() {
+          PositionX = PositionX + speedX;
+          PositionY = PositionY + speedY;
+          moveBoxTo(PositionX, PositionY);
+          if (PositionX > boardWidth) {
+            speedX = -speedX;
+          }
+          if (PositionX < 0) {
+            speedX = -speedX;
+          }
+          if (PositionY > boardHeight) {
+            speedY = -speedY;
+          }
+          if (PositionY < 0) {
+            speedY = -speedY;
+          }
+        }
+
+        /*
+                 This Function will be called each time the box is clicked. Each time it is called,
+                 it should increase the points total, increase the speed, and move the box to
+                 the left side of the screen.
+                 */
+        function handleBoxClick() {
+          PositionX = 0;
+          points = points + 1;
+          changeBoxText(points);
+          speed = speed + 3;
+          if (speed > -0) {
+            speed = speed + 3;
+          } else if (speed <= 0) {
+            speed = speed - 3;
+          }
+        }
+      })();
+    </script>
   </body>
 </html>
